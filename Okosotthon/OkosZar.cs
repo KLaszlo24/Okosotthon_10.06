@@ -6,10 +6,15 @@ namespace Okosotthon
 {
     public class OkosZar: OkosEszkoz
     {
+        private bool zartE;
+        private string pinKod;
+
+        public bool ZartE { get => zartE; private set => zartE = value; }
+
         public OkosZar(string azonosito, string nev, string pinKod)
         : base(azonosito, nev)
         {
-            throw new NotImplementedException();
+            this.pinKod = "alma";
         }
 
         public override void ParancsVegrehajtasa(string parancs)

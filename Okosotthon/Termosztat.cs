@@ -6,8 +6,8 @@ namespace Okosotthon
 {
     public class Termosztat : OkosEszkoz
     {
-        double jelenlegiHomerseklet;
-        double celHomerseklet;
+        private double jelenlegiHomerseklet;
+        private double celHomerseklet;
 
         public double JelenlegiHomerseklet { get => jelenlegiHomerseklet; private set => jelenlegiHomerseklet = value; }
         public double CelHomerseklet { get => celHomerseklet; private set => celHomerseklet = value; }
@@ -21,17 +21,32 @@ namespace Okosotthon
 
         public override void ParancsVegrehajtasa(string parancs)
         {
-            if()
+            if (parancs.StartsWith("BEALLIT_HOMERSEKLET:"))
+            {
+                string ertek = parancs.Substring("BEALLIT_HOMERSEKLET:".Length);
+
+                if (double.TryParse(ertek, out double homerseklet))
+                {
+                    this.CelHomerseklet = homerseklet;
+                }
+            }
         }
 
         public override string AllapotJelentes()
         {
-            throw new NotImplementedException();
+           return $"A jelenlegi hőmérséklet: {JelenlegiHomerseklet}";
         }
 
         protected override bool OnTesztFuttatasa()
         {
-            throw new NotImplementedException();
+            if (this.CelHomerseklet >= 5.0 && this.CelHomerseklet <= 35.0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
     }
