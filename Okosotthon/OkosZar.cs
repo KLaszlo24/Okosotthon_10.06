@@ -4,10 +4,12 @@ using System.Text;
 
 namespace Okosotthon
 {
-    public class OkosZar : OkosEszkoz
+    public class OkosZar : OkosEszkoz, IHangjelzo, IStatisztika
     {
         private bool zartE;
         private string pinKod;
+        private int nyitasokSzama;
+        private int hibasPinProbalkozasok;
 
         public bool ZartE
         {
@@ -20,6 +22,8 @@ namespace Okosotthon
         {
             this.pinKod = pinKod;
             ZartE = true;
+            nyitasokSzama = 0;
+            hibasPinProbalkozasok = 0;
         }
 
         public override void ParancsVegrehajtasa(string parancs)
@@ -30,7 +34,24 @@ namespace Okosotthon
 
                 if (megadottPin == this.pinKod)
                 {
+                    if (ZartE)
+                    {
+                        nyitasokSzama++;
+                    }
+
                     ZartE = false;
+                    hibasPinProbalkozasok = 0;
+                }
+                else
+                {
+                    hibasPinProbalkozasok++;
+
+                    Csipog(1);
+
+                    if (hibasPinProbalkozasok >= 3)
+                    {
+                        VeszjelzesInditasa();
+                    }
                 }
             }
             else if (parancs == "ZARAS")
@@ -52,8 +73,25 @@ namespace Okosotthon
         public override void GyariBeallitasokVisszaallitasa()
         {
             base.GyariBeallitasokVisszaallitasa();
-            this.pinKod = "0000";
             ZartE = true;
+            nyitasokSzama = 0;
+            hibasPinProbalkozasok = 0;
+        }
+
+        public void Csipog(int hosszu)
+        {
+            Console.WriteLine($"Csipogás! Hossz: {hosszu}");
+        }
+
+        public void VeszjelzesInditasa()
+        {
+            Console.WriteLine("VÉSZJELZÉS! Túl sok hibás PIN-kód!");
+        }
+
+        public string StatisztikatKeszit()
+        {
+            return $"Sikeres nyitások száma: {nyitasokSzama}, " +
+                   $"Hibás PIN-próbálkozások száma: {hibasPinProbalkozasok}";
         }
     }
 }
