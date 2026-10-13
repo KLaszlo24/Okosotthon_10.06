@@ -16,7 +16,7 @@ namespace Okosotthon
         : base(azonosito, nev)
         {
             JelenlegiHomerseklet = 21.0;
-            this.CelHomerseklet = celHomerseklet;
+            this.celHomerseklet = celHomerseklet;
         }
 
         public override void ParancsVegrehajtasa(string parancs)
@@ -27,7 +27,7 @@ namespace Okosotthon
 
                 if (double.TryParse(ertek, out double homerseklet))
                 {
-                    this.CelHomerseklet = homerseklet;
+                    this.celHomerseklet = homerseklet;
                 }
             }
         }
@@ -39,7 +39,7 @@ namespace Okosotthon
 
         protected override bool OnTesztFuttatasa()
         {
-            if (this.CelHomerseklet >= 5.0 && this.CelHomerseklet <= 35.0)
+            if (this.celHomerseklet >= 5.0 && this.celHomerseklet <= 35.0)
             {
                 return true;
             }
